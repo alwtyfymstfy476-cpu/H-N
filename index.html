@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Anatomy Mid-Year Exam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-glow: #00d2ff;
+            --secondary-glow: #3a7bd5;
+            --correct-color: #2ecc71;
+            --wrong-color: #e74c3c;
+            --bg-dark: #020205;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Cairo', sans-serif;
+            overflow-x: hidden;
+            direction: ltr; /* English Orientation */
+        }
+
+        /* Galaxy Background with Sun Glow */
+        #galaxy-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at top right, #1b2735 0%, #090a0f 100%);
+        }
+
+        .sun-glow {
+            position: fixed;
+            top: -150px;
+            right: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 210, 255, 0.15) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle var(--d) infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, white, transparent);
+            opacity: 0;
+            animation: shoot 4s linear infinite;
+        }
+
+        @keyframes shoot {
+            0% { transform: translate(100vw, 0) rotate(-45deg); opacity: 1; }
+            20% { transform: translate(-100px, 100vh) rotate(-45deg); opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        /* Space-Style Score Counter */
+        #score-board {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 210, 255, 0.05);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+            z-index: 2000;
+            box-shadow: inset 0 0 10px rgba(0, 210, 255, 0.2), 0 0 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 3px solid var(--primary-glow);
+        }
+
+        .score-label {
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--primary-glow);
+            text-transform: uppercase;
+        }
+
+        .score-numbers {
+            font-size: 13px;
+            font-weight: bold;
+            text-shadow: 0 0 5px var(--primary-glow);
+        }
+
+        /* Header Section */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .author-neon {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 5px #fff, 0 0 10px var(--primary-glow), 0 0 20px var(--primary-glow), 0 0 40px var(--primary-glow);
+            margin-bottom: 20px;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to bottom, #fff, var(--primary-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 5px 15px rgba(0,210,255,0.3));
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            font-size: 1rem;
+            animation: bounce 2s infinite;
+            opacity: 0.6;
+            font-family: 'Orbitron';
+            letter-spacing: 2px;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        /* Quiz Container */
+        .quiz-wrapper {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        .q-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            transition: 0.3s;
+        }
+
+        .q-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            border-left: 3px solid var(--primary-glow);
+            padding-left: 15px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .opt-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            display: block;
+        }
+
+        .opt-btn:active { transform: scale(0.98); }
+
+        .correct { 
+            background: rgba(46, 204, 113, 0.2) !important; 
+            border-color: var(--correct-color) !important;
+        }
+
+        .wrong { 
+            background: rgba(231, 76, 60, 0.2) !important; 
+            border-color: var(--wrong-color) !important;
+        }
+
+        /* Emoji Pop */
+        #emoji-layer {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 80px;
+            z-index: 3000;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .pop-animation {
+            animation: popOut 0.8s forwards;
+        }
+
+        @keyframes popOut {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { transform: translate(-50%, -60%) scale(1.3); opacity: 1; }
+            100% { transform: translate(-50%, -80%) scale(1); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="galaxy-bg"></div>
+<div class="sun-glow"></div>
+
+<div id="score-board">
+    <span class="score-label">Mission Stats:</span>
+    <span class="score-numbers">
+        <span id="current-score">0</span><span style="color: rgba(255,255,255,0.4); margin: 0 2px;">/</span>31
+    </span>
+</div>
+
+<header>
+    <div class="author-neon">by: al_witify</div>
+    <div class="author-neon">H&N Anatomy MCQs</div>
+    <div class="scroll-down">EXPLORE QUESTIONS ⬇️</div>
+</header>
+
+<div class="quiz-wrapper" id="quiz-engine"></div>
+
+<div id="emoji-layer"></div>
+
+<audio id="audio-correct" src="https://www.myinstants.com/media/sounds/correct.mp3"></audio>
+<audio id="audio-wrong" src="https://www.myinstants.com/media/sounds/wrong.mp3"></audio>
+
+<script>
+    const quizData = [
+        { q: "1. What is the primary function of the orbicularis oculi muscle in relation to the eyelids?", options: ["a. To support the tarsal plates", "b. To raise the upper eyelid", "c. To close the eyelids", "d. To produce tears", "e. None of above"], correct: 2 },
+        { q: "2. Which part of the eye is responsible for its avascular nature?", options: ["a. Iris", "b. Sclera", "c. Cornea", "d. Choroid", "e. Retina"], correct: 2 },
+        { q: "3. Extra ocular muscles", options: ["a. all supply by abducent nerve.", "b. all originate from tendinous ring.", "c. superior oblique supply by trochlear nerve.", "d. lateral rectus supplied by oculomotor.", "e. none of above"], correct: 2 },
+        { q: "4. Regarding oculomotor nerve", options: ["a. originate from medulla oblongata.", "b. have motor nuclei only.", "c. Supply all extra ocular muscles.", "d. pass in medial wall of cavernous sinus.", "e. all above are false"], correct: 4 },
+        { q: "5. The nasal septum bony parts consist of:", options: ["a. the maxilla", "b. the vomer and ethmoid bones", "c. the sphenoid and ethmoid bones", "d. the frontal, zygoma and maxilla", "e. the vomer and palatine bones"], correct: 1 },
+        { q: "6. Regarding the abducent nerve (CN V1):", options: ["a. the nucleus lies in the medulla", "b. supplies superior oblique muscle", "c. enters the orbit via superior orbital fissure", "d. has no relation to the cavernous sinus", "e. carries autonomic fibers from EdingerWestphal node"], correct: 2 },
+        { q: "7. The larynx", options: ["a. Is a respiratory organ whose essential function is phonation", "b. Extends from the anterior upper border of the epiglottis to the level of C6", "c. Consists of two single cartilages, the thyroid and cricoid", "d. Is hauled up beneath the tongue with the epiglottis tilted anterior and upwards during swallowing", "e. Is supplied by the external laryngeal nerve except for the cricothyroid muscle which is supplied by the recurrent laryngeal nerve"], correct: 1 },
+        { q: "8. external jugular vein (all true except)", options: ["a. forms by union of posterior division of retromandibular vein & posterior auricular vein", "b. its beginning lies in parotid gland", "c. end to subclavian vein", "d. descend inferoanteriorly", "e. b &c"], correct: 3 },
+        { q: "9. platysma muscle", options: ["a. originated from body of mandible", "b. supplied by cervical branch of facial nerve", "c. supplied by cervical spinal roots", "d. skin overlying it supplied by cervical branch of facial nerve", "e. all of the above."], correct: 1 },
+        { q: "10. digastric muscle", options: ["a. arise from body of mandible (anterior belly)", "b. anterior belly elevate larynx", "c. anterior belly supplied by trigeminal nerve", "d. all of above", "e. none of the above"], correct: 2 },
+        { q: "11. mylohyoid muscle (choose false)", options: ["a. arise from mandibular body", "b. supplied by trigeminal nerve", "c. elevate body of mandible", "d. divide submandibular gland into superficial & deep parts", "e. all of the above"], correct: 2 },
+        { q: "12. deep cervical fascia (choose false one)", options: ["a. carotid sheath contains one cranial nerve in its lower part", "b. carotid sheath contains 4 cranial nerves in its upper part", "c. carotid sheath contains deep cervical vessels", "d. contain maxillary artery", "e. all of the above."], correct: 3 },
+        { q: "13. major border lines of neck triangles (all of following except)", options: ["a. trapezius muscle", "b. strap muscles", "c. sternocleidomastoid muscle", "d. omohyoid muscle", "e. a &b"], correct: 1 },
+        { q: "14. anterior neck triangle contains except", options: ["a. stylohyoid muscle", "b. hypoglossal nerve", "c. submandibular gland", "d. brachial plexus", "e. all of the above."], correct: 3 },
+        { q: "15. facial vein", options: ["a. facial veins joined by posterior division of retromandibular vein", "b. facial vein drained to external jugular vein", "c. facial vein connected with intracranial space", "d. facial vein cross over mandible without crossing over maxilla", "e. all of the above."], correct: 2 },
+        { q: "16. maxillary vein (all true except)", options: ["a. one of two tributaries of retromandibular vein", "b. start in pterygopalatine fossa", "c. end in parotid gland", "d. forms from pterygoid plexus", "e. none of the above."], correct: 1 },
+        { q: "17. internal jugular vein", options: ["a. has two bulbs & valves", "b. forms as continuation of superior petrosal sinus", "c. lies posterior to spinal accessory nerve in superior part of neck", "d. has 8 tributaries", "e. a &c"], correct: 0 },
+        { q: "18. neck lymphatic system", options: ["a. retropharyngeal lymph nodes involute after age 5 years", "b. submandibular lymph nodes receive lymph from nose", "c. deep lymph nodes called jugular group", "d. all of above true", "e. none of the above"], correct: 3 },
+        { q: "19. cancer in nasopharynx & neck lymph nodes", options: ["a. can cause posterior triangle lymphadenopathy", "b. start in lining of basisphenoid", "c. 1st involved lymph nodes are submandibular", "d. all of above true", "e. none of the above"], correct: 0 },
+        { q: "20. autonomic neck & head nervous system", options: ["a. glossopharyngeal supply parasympathetic innervation of sublingual glands", "b. oculomotor supply sympathetic & motor innervation of eye", "c. vagus & sympathetic chain lie inside carotid sheath", "d. vagus is motor & parasympathetic nerve", "e. all of the above."], correct: 3 },
+        { q: "21. deep neck spaces (all true except)", options: ["a. are potential spaces.", "b. retropharyngeal space lies behind the pharynx.", "c. danger space lies between alar and prevertebral fascia.", "d. pretracheal space is limited to the neck.", "e. none of the above."], correct: 3 },
+        { q: "22. oral cavity", options: ["a. sensory nerve supply of it for larger proportion mediated by mandibular division of trigeminal nerve", "b. tongue muscles mainly supplied by facial artery", "c. foramen cecum play significant role in tasting of food", "d. all muscles of tongue supplied by same nerve", "e. none of the above"], correct: 4 },
+        { q: "23. tensor palati muscle", options: ["a. inserted to Eustachian tube", "b. it is minor palatal muscle", "c. supplied by maxillary division of trigeminal nerve", "d. when contract open Eustachian tube", "e. a & b"], correct: 3 },
+        { q: "24. palate", options: ["a. has 4 muscles", "b. palatine bone forms larger part of hard palate", "c. supplied by 9th, 10th as a whole", "d. uvular muscle has no role in swallowing & articulation", "e. none of the above"], correct: 4 },
+        { q: "25. pharynx", options: ["a. palatine tonsil diseases cause jugulo- omohyoid lymph nodes enlargement", "b. palatoglossus forms posterior end of palatine tonsils", "c. palatoglossus share in oropharyngeal isthmus", "d. b & c", "e. all of the above."], correct: 2 },
+        { q: "26. hypopharynx (choose false)", options: ["a. C6 vertebra represents end of it", "b. aryepiglottic folds forms lateral boundary", "c. consists of pyriform fossae & postcricoid regions", "d. valleculae are not part from it", "e. none of the above."], correct: 3 },
+        { q: "27. superior constrictor muscle", options: ["a. arise from pharyngeal tubercle of occipital bone", "b. by its contraction propel bolus of food superiorly", "c. innervated by mandibular division of trigeminal nerve", "d. inserted to pharyngeal raphe", "e. c & d"], correct: 3 },
+        { q: "28. salpingopharyngus muscle", options: ["a. elevates of Eustachian tube", "b. share in breathing", "c. blends with palatopharyngus", "d. supplied by trigeminal nerve", "e. a & b."], correct: 2 },
+        { q: "29. A patient presents with visual field defects and endocrine dysfunction. Imaging shows a lesion in the sella turcica region. Which dural fold is most directly related?", options: ["a. Falx cerebri", "b. Falx cerebelli", "c. Tentorium cerebelli", "d. Diaphragma sella", "e. Straight sinus."], correct: 3 },
+        { q: "30. Which of the following dural sinuses lies between the periosteal and meningeal layers of the dura mater?", options: ["a. Inferior sagittal sinus", "b. Superior sagittal sinus", "c. Straight sinus", "d. Cavernous sinus", "e. Great cerebral vein"], correct: 1 },
+        { q: "31. A lumbar MRI reveals a thickened and inflamed denticulate ligament. From which meningeal layer does this ligament originate?", options: ["a. Pia mater", "b. Arachnoid mater", "c. Dura mater", "d. Subarachnoid space"], correct: 0 }
+    ];
+
+    const emojisCorrect = ["🪿","❤️","🔥","❤️‍🔥","🫶","💯","💪","😍"];
+    const emojisWrong = ["😑","🤦","💤","❌","💔","🦖","😂"];
+    let score = 0;
+    const answeredIndices = new Set();
+
+    // Sound unlock for Mobile/Telegram
+    document.addEventListener('touchstart', function() {
+        document.getElementById('audio-correct').load();
+        document.getElementById('audio-wrong').load();
+    }, { once: true });
+
+    function initGalaxy() {
+        const bg = document.getElementById('galaxy-bg');
+        for (let i = 0; i < 120; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = Math.random() * 2.5 + 'px';
+            star.style.height = star.style.width;
+            star.style.top = Math.random() * 100 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.setProperty('--d', (Math.random() * 3 + 2) + 's');
+            bg.appendChild(star);
+        }
+        setInterval(() => {
+            const s = document.createElement('div');
+            s.className = 'shooting-star';
+            s.style.top = Math.random() * 50 + '%';
+            bg.appendChild(s);
+            setTimeout(() => s.remove(), 4000);
+        }, 6000);
+    }
+
+    function triggerFeedback(isCorrect) {
+        const layer = document.getElementById('emoji-layer');
+        const audio = document.getElementById(isCorrect ? 'audio-correct' : 'audio-wrong');
+        const list = isCorrect ? emojisCorrect : emojisWrong;
+        
+        layer.innerText = list[Math.floor(Math.random() * list.length)];
+        layer.className = '';
+        void layer.offsetWidth;
+        layer.classList.add('pop-animation');
+
+        audio.currentTime = 0;
+        audio.play().catch(e => {});
+    }
+
+    function buildQuiz() {
+        const container = document.getElementById('quiz-engine');
+        quizData.forEach((item, qIdx) => {
+            const card = document.createElement('div');
+            card.className = 'q-card';
+            card.innerHTML = `<div class="q-text">${item.q}</div>`;
+            
+            item.options.forEach((opt, oIdx) => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    if (answeredIndices.has(qIdx)) return;
+                    answeredIndices.add(qIdx);
+                    
+                    if (oIdx === item.correct) {
+                        btn.classList.add('correct');
+                        score++;
+                        document.getElementById('current-score').innerText = score;
+                        triggerFeedback(true);
+                    } else {
+                        btn.classList.add('wrong');
+                        card.querySelectorAll('.opt-btn')[item.correct].classList.add('correct');
+                        triggerFeedback(false);
+                    }
+                };
+                card.appendChild(btn);
+            });
+            container.appendChild(card);
+        });
+    }
+
+    window.onload = () => {
+        initGalaxy();
+        buildQuiz();
+    };
+</script>
+</body>
+  </html>
+
