@@ -2,264 +2,346 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Anatomy Mid-Year Exam</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>H&amp;N Anatomy | Mission: Neural Nexus</title>
     <style>
-        :root {
-            --primary-glow: #00d2ff;
-            --secondary-glow: #3a7bd5;
-            --correct-color: #2ecc71;
-            --wrong-color: #e74c3c;
-            --bg-dark: #020205;
-        }
-
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-dark);
-            color: white;
-            font-family: 'Cairo', sans-serif;
+            min-height: 100vh;
+            background: radial-gradient(circle at 10% 20%, #0a0f1e, #03060c);
+            font-family: 'Segoe UI', system-ui, 'Inter', 'Cairo', sans-serif;
+            color: #eef5ff;
             overflow-x: hidden;
-            direction: ltr; /* English Orientation */
+            scroll-behavior: smooth;
         }
 
-        /* Galaxy Background with Sun Glow */
-        #galaxy-bg {
+        /* animated mesh / grid background (different from galaxy) */
+        .mesh-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -2;
-            background: radial-gradient(circle at top right, #1b2735 0%, #090a0f 100%);
+            background-image: 
+                repeating-linear-gradient(0deg, rgba(0, 180, 255, 0.08) 0px, rgba(0, 180, 255, 0.08) 1px, transparent 1px, transparent 80px),
+                repeating-linear-gradient(90deg, rgba(0, 220, 255, 0.06) 0px, rgba(0, 220, 255, 0.06) 1px, transparent 1px, transparent 80px);
+            background-size: 80px 80px;
+            animation: meshSlide 28s linear infinite;
+            opacity: 0.4;
         }
 
-        .sun-glow {
+        @keyframes meshSlide {
+            0% { background-position: 0 0; }
+            100% { background-position: 80px 80px; }
+        }
+
+        .gradient-orb {
             position: fixed;
-            top: -150px;
-            right: -150px;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(0, 210, 255, 0.15) 0%, transparent 70%);
+            top: -30vh;
+            right: -20vw;
+            width: 90vw;
+            height: 90vw;
+            background: radial-gradient(circle, rgba(0, 160, 255, 0.2), rgba(10, 30, 60, 0) 70%);
+            border-radius: 50%;
+            filter: blur(60px);
             z-index: -1;
             pointer-events: none;
         }
 
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.5;
-            animation: twinkle var(--d) infinite;
+        .gradient-orb-bottom {
+            bottom: -30vh;
+            left: -20vw;
+            top: auto;
+            background: radial-gradient(circle, rgba(100, 0, 255, 0.18), rgba(0, 0, 0, 0) 70%);
         }
 
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        .shooting-star {
-            position: absolute;
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, white, transparent);
-            opacity: 0;
-            animation: shoot 4s linear infinite;
-        }
-
-        @keyframes shoot {
-            0% { transform: translate(100vw, 0) rotate(-45deg); opacity: 1; }
-            20% { transform: translate(-100px, 100vh) rotate(-45deg); opacity: 0; }
-            100% { opacity: 0; }
-        }
-
-        /* Space-Style Score Counter */
-        #score-board {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 210, 255, 0.05);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(0, 210, 255, 0.3);
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-family: 'Orbitron', sans-serif;
-            z-index: 2000;
-            box-shadow: inset 0 0 10px rgba(0, 210, 255, 0.2), 0 0 15px rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-left: 3px solid var(--primary-glow);
-        }
-
-        .score-label {
-            font-size: 9px;
-            letter-spacing: 2px;
-            color: var(--primary-glow);
-            text-transform: uppercase;
-        }
-
-        .score-numbers {
-            font-size: 13px;
-            font-weight: bold;
-            text-shadow: 0 0 5px var(--primary-glow);
-        }
-
-        /* Header Section */
-        header {
-            height: 100vh;
+        /* header section with futuristic glitch */
+        .hero {
+            min-height: 85vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
+            padding: 2rem 1rem;
             position: relative;
         }
 
-        .author-neon {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            text-shadow: 0 0 5px #fff, 0 0 10px var(--primary-glow), 0 0 20px var(--primary-glow), 0 0 40px var(--primary-glow);
-            margin-bottom: 20px;
+        .badge-neon {
+            font-family: monospace;
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            color: #5bc0ff;
+            background: rgba(0, 50, 80, 0.5);
+            backdrop-filter: blur(8px);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(0, 200, 255, 0.3);
         }
 
-        .main-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: linear-gradient(to bottom, #fff, var(--primary-glow));
+        h1 {
+            font-size: clamp(2.4rem, 8vw, 4.2rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFFFFF, #7bc9ff, #2f8eff);
+            background-clip: text;
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 5px 15px rgba(0,210,255,0.3));
+            color: transparent;
+            text-shadow: 0 0 18px rgba(0, 160, 255, 0.3);
+            margin: 0.5rem 0;
         }
 
-        .scroll-down {
-            position: absolute;
-            bottom: 30px;
-            font-size: 1rem;
-            animation: bounce 2s infinite;
-            opacity: 0.6;
-            font-family: 'Orbitron';
-            letter-spacing: 2px;
+        .sub {
+            font-size: 0.9rem;
+            color: #a0c4ff;
+            border-top: 1px dashed rgba(100, 180, 255, 0.5);
+            padding-top: 1rem;
+            display: inline-flex;
+            gap: 0.5rem;
         }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
-        }
-
-        /* Quiz Container */
-        .quiz-wrapper {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 20px;
-            padding-bottom: 100px;
-        }
-
-        .q-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
-            transition: 0.3s;
-        }
-
-        .q-text {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            border-left: 3px solid var(--primary-glow);
-            padding-left: 15px;
-            line-height: 1.6;
-            text-align: left;
-        }
-
-        .opt-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            width: 100%;
-            text-align: left;
-            font-size: 0.95rem;
-            transition: 0.2s;
-            display: block;
-        }
-
-        .opt-btn:active { transform: scale(0.98); }
-
-        .correct { 
-            background: rgba(46, 204, 113, 0.2) !important; 
-            border-color: var(--correct-color) !important;
-        }
-
-        .wrong { 
-            background: rgba(231, 76, 60, 0.2) !important; 
-            border-color: var(--wrong-color) !important;
-        }
-
-        /* Emoji Pop */
-        #emoji-layer {
+        .pill-stats {
             position: fixed;
-            top: 50%;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(8, 20, 36, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 60px;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            gap: 1rem;
+            pointer-events: none;
+        }
+
+        .pill-stats span:first-child {
+            color: #6bc6ff;
+        }
+
+        .pill-stats span:last-child {
+            color: #ffdf8c;
+            font-size: 1.1rem;
+        }
+
+        /* quiz container – card design different from previous */
+        .quiz-container {
+            max-width: 780px;
+            margin: 0 auto 80px auto;
+            padding: 0 20px 40px 20px;
+        }
+
+        .quiz-card {
+            background: rgba(12, 22, 35, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(72, 187, 255, 0.2);
+            border-radius: 32px;
+            margin-bottom: 28px;
+            transition: transform 0.2s ease, box-shadow 0.2s;
+            overflow: hidden;
+            box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.4);
+        }
+
+        .quiz-card:hover {
+            border-color: rgba(0, 200, 255, 0.5);
+            box-shadow: 0 18px 32px -12px rgba(0, 130, 200, 0.2);
+        }
+
+        .card-header {
+            padding: 18px 24px 8px 24px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, rgba(0, 160, 255, 0.1), transparent);
+            color: #7bcbff;
+            border-bottom: 1px solid rgba(100, 180, 255, 0.2);
+        }
+
+        .question-text {
+            padding: 16px 24px 12px 24px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            font-weight: 500;
+            color: #f0f9ff;
+        }
+
+        .options-area {
+            padding: 8px 24px 24px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .opt {
+            background: rgba(20, 35, 55, 0.7);
+            border: 1px solid rgba(72, 187, 255, 0.25);
+            border-radius: 60px;
+            padding: 12px 18px;
+            font-size: 0.9rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #eef2ff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 450;
+        }
+
+        .opt:active {
+            transform: scale(0.97);
+        }
+
+        .opt-letter {
+            font-weight: 700;
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 150, 255, 0.2);
+            border-radius: 40px;
+            font-size: 0.8rem;
+            color: #8aceff;
+        }
+
+        .opt.correct-answer {
+            background: rgba(46, 204, 113, 0.2);
+            border-color: #2ecc71;
+            box-shadow: 0 0 8px rgba(46, 204, 113, 0.3);
+        }
+
+        .opt.wrong-answer {
+            background: rgba(231, 76, 60, 0.2);
+            border-color: #e74c3c;
+        }
+
+        .opt.disabled-opt {
+            cursor: default;
+            opacity: 0.9;
+        }
+
+        .emoji-feedback {
+            position: fixed;
+            top: 45%;
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 80px;
-            z-index: 3000;
+            z-index: 1000;
             pointer-events: none;
-            opacity: 0;
+            filter: drop-shadow(0 0 15px rgba(0,0,0,0.5));
+            transition: opacity 0.1s;
         }
 
-        .pop-animation {
-            animation: popOut 0.8s forwards;
+        .pop-emote {
+            animation: emojiBlast 0.7s cubic-bezier(0.2, 1.2, 0.3, 1) forwards;
         }
 
-        @keyframes popOut {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-            50% { transform: translate(-50%, -60%) scale(1.3); opacity: 1; }
-            100% { transform: translate(-50%, -80%) scale(1); opacity: 0; }
+        @keyframes emojiBlast {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.3);
+            }
+            30% {
+                opacity: 1;
+                transform: translate(-50%, -60%) scale(1.4);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -90%) scale(1);
+            }
+        }
+
+        /* scroll bar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #07121f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2f6f9f;
+            border-radius: 10px;
+        }
+
+        /* responsive */
+        @media (max-width: 550px) {
+            .question-text {
+                font-size: 1rem;
+                padding: 12px 20px;
+            }
+            .options-area {
+                padding: 6px 20px 20px 20px;
+            }
+            .opt {
+                padding: 10px 14px;
+                font-size: 0.85rem;
+            }
+            .pill-stats {
+                bottom: 12px;
+                left: 12px;
+                padding: 0.3rem 1rem;
+                font-size: 0.75rem;
+            }
+        }
+        /* small touches */
+        .status-badge {
+            background: radial-gradient(ellipse at left, #0066aa20, transparent);
+            border-radius: 32px;
+            display: inline-block;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.7rem;
+            color: #4f6f8f;
+            border-top: 1px solid rgba(100, 150, 200, 0.2);
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
-<div id="galaxy-bg"></div>
-<div class="sun-glow"></div>
+<div class="mesh-bg"></div>
+<div class="gradient-orb"></div>
+<div class="gradient-orb gradient-orb-bottom"></div>
 
-<div id="score-board">
-    <span class="score-label">Mission Stats:</span>
-    <span class="score-numbers">
-        <span id="current-score">0</span><span style="color: rgba(255,255,255,0.4); margin: 0 2px;">/</span>31
-    </span>
+<div class="pill-stats">
+    <span>SCORE ❤️</span>
+    <span id="liveScore">0</span><span> / 28</span>
 </div>
 
-<header>
-    <div class="author-neon">by: al_witify</div>
-    <div class="author-neon">H&N Anatomy MCQs</div>
-    <div class="scroll-down">EXPLORE QUESTIONS ⬇️</div>
+<header class="hero">
+    <div class="badge-neon">al_witify</div>
+    <h1>Head & Neck<br>Deep Dive</h1>
+    <div class="sub">
+        <span>💐💐</span>
+        <span>🎧 haptic feedback</span>
+    </div>
+    <div style="margin-top: 2rem; font-size: 0.8rem; opacity: 0.7;">▼ scroll to explore ▼</div>
 </header>
 
-<div class="quiz-wrapper" id="quiz-engine"></div>
+<div class="quiz-container" id="quizRoot"></div>
+<footer>by: al_witify</footer>
 
-<div id="emoji-layer"></div>
-
-<audio id="audio-correct" src="https://www.myinstants.com/media/sounds/correct.mp3"></audio>
-<audio id="audio-wrong" src="https://www.myinstants.com/media/sounds/wrong.mp3"></audio>
+<!-- audio elements (same URLs) -->
+<audio id="correctSound" preload="auto" src="https://www.myinstants.com/media/sounds/correct.mp3"></audio>
+<audio id="wrongSound" preload="auto" src="https://www.myinstants.com/media/sounds/wrong.mp3"></audio>
 
 <script>
+    // ---------- EXACT ORIGINAL QUIZ DATA (28 questions, untouched) ----------
     const quizData = [
         { q: "1. What is the primary function of the orbicularis oculi muscle in relation to the eyelids?", options: ["a. To support the tarsal plates", "b. To raise the upper eyelid", "c. To close the eyelids", "d. To produce tears", "e. None of above"], correct: 2 },
         { q: "2. Which part of the eye is responsible for its avascular nature?", options: ["a. Iris", "b. Sclera", "c. Cornea", "d. Choroid", "e. Retina"], correct: 2 },
@@ -288,92 +370,226 @@
         { q: "25. pharynx", options: ["a. palatine tonsil diseases cause jugulo- omohyoid lymph nodes enlargement", "b. palatoglossus forms posterior end of palatine tonsils", "c. palatoglossus share in oropharyngeal isthmus", "d. b & c", "e. all of the above."], correct: 2 },
         { q: "26. hypopharynx (choose false)", options: ["a. C6 vertebra represents end of it", "b. aryepiglottic folds forms lateral boundary", "c. consists of pyriform fossae & postcricoid regions", "d. valleculae are not part from it", "e. none of the above."], correct: 4 },
         { q: "27. superior constrictor muscle", options: ["a. arise from pharyngeal tubercle of occipital bone", "b. by its contraction propel bolus of food superiorly", "c. innervated by mandibular division of trigeminal nerve", "d. inserted to pharyngeal raphe", "e. c & d"], correct: 3 },
-        { q: "28. salpingopharyngus muscle", options: ["a. elevates of Eustachian tube", "b. share in breathing", "c. blends with palatopharyngus", "d. supplied by trigeminal nerve", "e. a & b."], correct: 2 },
-       
+        { q: "28. salpingopharyngus muscle", options: ["a. elevates of Eustachian tube", "b. share in breathing", "c. blends with palatopharyngus", "d. supplied by trigeminal nerve", "e. a & b."], correct: 2 }
     ];
 
+    // ---------- emoji + sound arrays (EXACT same as original style) ----------
     const emojisCorrect = ["🪿","❤️","🔥","❤️‍🔥","🫶","💯","💪","😍"];
     const emojisWrong = ["😑","🤦","💤","❌","💔","🦖","😂"];
-    let score = 0;
-    const answeredIndices = new Set();
 
-    // Sound unlock for Mobile/Telegram
-    document.addEventListener('touchstart', function() {
-        document.getElementById('audio-correct').load();
-        document.getElementById('audio-wrong').load();
-    }, { once: true });
+    // state
+    let currentScore = 0;
+    const answeredStatus = new Array(quizData.length).fill(false);    // whether question answered
+    const selectedChoice = new Array(quizData.length).fill(null);     // store selected option index per question
 
-    function initGalaxy() {
-        const bg = document.getElementById('galaxy-bg');
-        for (let i = 0; i < 120; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.width = Math.random() * 2.5 + 'px';
-            star.style.height = star.style.width;
-            star.style.top = Math.random() * 100 + '%';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.setProperty('--d', (Math.random() * 3 + 2) + 's');
-            bg.appendChild(star);
+    // DOM elements
+    const quizContainer = document.getElementById("quizRoot");
+    const liveScoreSpan = document.getElementById("liveScore");
+
+    // helper to play sound & emoji pop
+    function triggerReaction(isCorrect) {
+        // sound
+        const audio = isCorrect ? document.getElementById("correctSound") : document.getElementById("wrongSound");
+        if (audio) {
+            audio.currentTime = 0;
+            audio.play().catch(e => { /* silent fail for auto-policy */ });
         }
-        setInterval(() => {
-            const s = document.createElement('div');
-            s.className = 'shooting-star';
-            s.style.top = Math.random() * 50 + '%';
-            bg.appendChild(s);
-            setTimeout(() => s.remove(), 4000);
-        }, 6000);
+        // emoji layer
+        const emojiDiv = document.createElement("div");
+        emojiDiv.className = "emoji-feedback";
+        const emojiArray = isCorrect ? emojisCorrect : emojisWrong;
+        const randomEmoji = emojiArray[Math.floor(Math.random() * emojiArray.length)];
+        emojiDiv.textContent = randomEmoji;
+        document.body.appendChild(emojiDiv);
+        emojiDiv.classList.add("pop-emote");
+        setTimeout(() => {
+            emojiDiv.remove();
+        }, 700);
     }
 
-    function triggerFeedback(isCorrect) {
-        const layer = document.getElementById('emoji-layer');
-        const audio = document.getElementById(isCorrect ? 'audio-correct' : 'audio-wrong');
-        const list = isCorrect ? emojisCorrect : emojisWrong;
+    // update score UI
+    function updateScoreUI() {
+        liveScoreSpan.innerText = currentScore;
+    }
+
+    // handle answer selection
+    function handleAnswer(qIndex, optIndex) {
+        if (answeredStatus[qIndex]) return;  // already answered
+
+        const question = quizData[qIndex];
+        const isCorrect = (optIndex === question.correct);
         
-        layer.innerText = list[Math.floor(Math.random() * list.length)];
-        layer.className = '';
-        void layer.offsetWidth;
-        layer.classList.add('pop-animation');
-
-        audio.currentTime = 0;
-        audio.play().catch(e => {});
+        // mark answered
+        answeredStatus[qIndex] = true;
+        selectedChoice[qIndex] = optIndex;
+        
+        if (isCorrect) {
+            currentScore++;
+            updateScoreUI();
+            triggerReaction(true);
+        } else {
+            triggerReaction(false);
+        }
+        
+        // re-render this specific card (to show correct/wrong and disable further clicks)
+        renderSingleCard(qIndex);
     }
-
-    function buildQuiz() {
-        const container = document.getElementById('quiz-engine');
-        quizData.forEach((item, qIdx) => {
-            const card = document.createElement('div');
-            card.className = 'q-card';
-            card.innerHTML = `<div class="q-text">${item.q}</div>`;
+    
+    // render one card with visual feedback
+    function renderSingleCard(idx) {
+        const q = quizData[idx];
+        const alreadyAnswered = answeredStatus[idx];
+        const userChoice = selectedChoice[idx];
+        const correctIdx = q.correct;
+        
+        const cardDiv = document.createElement("div");
+        cardDiv.className = "quiz-card";
+        cardDiv.setAttribute("data-qid", idx);
+        
+        // header
+        const header = document.createElement("div");
+        header.className = "card-header";
+        header.innerText = `question ${idx+1}`;
+        cardDiv.appendChild(header);
+        
+        // question text
+        const qTextDiv = document.createElement("div");
+        qTextDiv.className = "question-text";
+        qTextDiv.innerText = q.q;
+        cardDiv.appendChild(qTextDiv);
+        
+        // options area
+        const optionsArea = document.createElement("div");
+        optionsArea.className = "options-area";
+        
+        q.options.forEach((opt, optIndex) => {
+            const optBtn = document.createElement("div");
+            optBtn.className = "opt";
             
-            item.options.forEach((opt, oIdx) => {
-                const btn = document.createElement('button');
-                btn.className = 'opt-btn';
-                btn.innerText = opt;
-                btn.onclick = () => {
-                    if (answeredIndices.has(qIdx)) return;
-                    answeredIndices.add(qIdx);
-                    
-                    if (oIdx === item.correct) {
-                        btn.classList.add('correct');
-                        score++;
-                        document.getElementById('current-score').innerText = score;
-                        triggerFeedback(true);
-                    } else {
-                        btn.classList.add('wrong');
-                        card.querySelectorAll('.opt-btn')[item.correct].classList.add('correct');
-                        triggerFeedback(false);
-                    }
-                };
-                card.appendChild(btn);
-            });
-            container.appendChild(card);
+            // letter indicator
+            const letterSpan = document.createElement("span");
+            letterSpan.className = "opt-letter";
+            letterSpan.innerText = String.fromCharCode(65 + optIndex); // A,B,C...
+            optBtn.appendChild(letterSpan);
+            
+            const textSpan = document.createElement("span");
+            textSpan.innerText = opt;
+            optBtn.appendChild(textSpan);
+            
+            // if answered, apply styles and disable click
+            if (alreadyAnswered) {
+                optBtn.classList.add("disabled-opt");
+                if (optIndex === correctIdx) {
+                    optBtn.classList.add("correct-answer");
+                } else if (optIndex === userChoice && optIndex !== correctIdx) {
+                    optBtn.classList.add("wrong-answer");
+                }
+                // no event listener
+            } else {
+                optBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    handleAnswer(idx, optIndex);
+                });
+            }
+            optionsArea.appendChild(optBtn);
         });
+        cardDiv.appendChild(optionsArea);
+        
+        // replace existing card if any
+        const oldCard = document.querySelector(`.quiz-card[data-qid='${idx}']`);
+        if (oldCard) {
+            oldCard.replaceWith(cardDiv);
+        } else {
+            // should not happen during initial render, but for safety
+            quizContainer.appendChild(cardDiv);
+        }
     }
-
-    window.onload = () => {
-        initGalaxy();
-        buildQuiz();
-    };
+    
+    // full initial render (all cards in order)
+    function renderAllCards() {
+        quizContainer.innerHTML = "";
+        for (let i = 0; i < quizData.length; i++) {
+            const q = quizData[i];
+            const cardDiv = document.createElement("div");
+            cardDiv.className = "quiz-card";
+            cardDiv.setAttribute("data-qid", i);
+            
+            const header = document.createElement("div");
+            header.className = "card-header";
+            header.innerText = `question ${i+1}`;
+            cardDiv.appendChild(header);
+            
+            const qTextDiv = document.createElement("div");
+            qTextDiv.className = "question-text";
+            qTextDiv.innerText = q.q;
+            cardDiv.appendChild(qTextDiv);
+            
+            const optionsArea = document.createElement("div");
+            optionsArea.className = "options-area";
+            
+            q.options.forEach((opt, optIndex) => {
+                const optBtn = document.createElement("div");
+                optBtn.className = "opt";
+                
+                const letterSpan = document.createElement("span");
+                letterSpan.className = "opt-letter";
+                letterSpan.innerText = String.fromCharCode(65 + optIndex);
+                optBtn.appendChild(letterSpan);
+                
+                const textSpan = document.createElement("span");
+                textSpan.innerText = opt;
+                optBtn.appendChild(textSpan);
+                
+                // if previously answered (from storage persistence? we reset every session but we keep state)
+                const already = answeredStatus[i];
+                if (already) {
+                    optBtn.classList.add("disabled-opt");
+                    if (optIndex === q.correct) {
+                        optBtn.classList.add("correct-answer");
+                    } else if (optIndex === selectedChoice[i] && optIndex !== q.correct) {
+                        optBtn.classList.add("wrong-answer");
+                    }
+                } else {
+                    optBtn.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        handleAnswer(i, optIndex);
+                    });
+                }
+                optionsArea.appendChild(optBtn);
+            });
+            cardDiv.appendChild(optionsArea);
+            quizContainer.appendChild(cardDiv);
+        }
+    }
+    
+    // extra: unlock audio on first touch for telegram / mobile
+    function unlockAudioOnFirstTouch() {
+        const unlock = () => {
+            const correctAudio = document.getElementById("correctSound");
+            const wrongAudio = document.getElementById("wrongSound");
+            if (correctAudio) correctAudio.load();
+            if (wrongAudio) wrongAudio.load();
+            document.removeEventListener("touchstart", unlock);
+            document.removeEventListener("click", unlock);
+        };
+        document.addEventListener("touchstart", unlock, { once: true });
+        document.addEventListener("click", unlock, { once: true });
+    }
+    
+    // initialization
+    function init() {
+        // reset state (fresh start)
+        for (let i = 0; i < quizData.length; i++) {
+            answeredStatus[i] = false;
+            selectedChoice[i] = null;
+        }
+        currentScore = 0;
+        updateScoreUI();
+        renderAllCards();
+        unlockAudioOnFirstTouch();
+    }
+    
+    init();
 </script>
 </body>
 </html>
